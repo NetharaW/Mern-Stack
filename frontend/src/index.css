@@ -1,0 +1,27 @@
+.card{height:100%;}
+
+.product-image{
+    height:150px;
+    object-fit: cover;
+}
+
+.product-description{
+    max-height:100px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient:vertical;
+}
+
+.product-card-body{
+    min-height:200px;
+
+}
+
+@media(max-width:576px){
+    .prodcut-listing .col{
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
