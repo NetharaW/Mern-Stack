@@ -5,7 +5,7 @@ import { Container,Row,Col,Button } from "react-bootstrap";
 import ProductCard from "../../components/ProductCard";
 import ProductModal from "./ProductModal";
 import { useDispatch,useSelector } from "react-redux";
-import { fetchProducts } from "../../redux/actions/productActions";
+import { addProduct, fetchProducts } from "../../redux/actions/productActions";
 
 const Products = () => {
     const sampleProducts = [];
@@ -31,19 +31,24 @@ const Products = () => {
     const handleEdit = (product) => {
       setEditItem(product);
       setShowModal(true);
-    }
+    };
 
     const handleDelete = (id) => {
       //dispatch delete product
-    }
+      dispatch(deleteProduct(id));
+    };
+    
 
-    const handleSubmit = () =>{
+    const handleSubmit = (values) =>{
       if(editItem) {
+        console.log("edited products",values);
         //dispatch update product action
+        dispatch(addProduct(values));
       }else {
         //dispatch add product
+        dispatch(updateProduct(values));
       }
-    }
+    };
         /*{
             id:1,
             name:"Wireless Headphones",
