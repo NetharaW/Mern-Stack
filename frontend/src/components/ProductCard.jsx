@@ -24,7 +24,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               role="button" 
               className="text-danger" 
               title="Delete" 
-              onCLick={onDelete} 
+              onClick={onDelete} 
             />
           </div>
         </div>

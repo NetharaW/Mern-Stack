@@ -11,6 +11,7 @@ import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Signup from './pages/Auths/Signup';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Home/>}></Route>
           <Route path="/products" element={<Product/>}/>
           <Route path="/contact" element={<Contact/>}/>   
+          <Route path="/register" element={<Signup/>}/>  
         </Routes>  
       </Router>
       <ToastContainer position= "top-right" autoClose={3000}/>

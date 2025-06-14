@@ -29,26 +29,36 @@ const productReducer = (state = initialState, action) => {
         case FETCH_PRODUCTS_SUCCESS:
             return { ...state, loading: false, items: action.payload };
         case FETCH_PRODUCTS_FAILURE:
-            return {...state, loading: false, error: action-payload };
+            return {...state, loading: false, error: action.payload };
         case CREATE_PRODUCT_REQUEST:
-            return{
+  return { ...state, createLoading: true };
+
+            case CREATE_PRODUCT_SUCCESS:
+            return {
                 ...state,
                 createLoading: false,
-                items: [...state.items,action.payload],
+                items: [...state.items, action.payload],
             };
-        case CREATE_PRODUCT_FAILURE:
-            return {...state,createLoading: false,error:action.payload};
 
-        case UPDATE_PRODUCT_REQUEST:
-            return{...state,updateLoading: true };
-        case UPDATE_PRODUCT_SUCCESS:
-            return{
-                ...state, 
-                updateLoading: false, 
-                items:state.items.map((item) =>
+            case UPDATE_PRODUCT_REQUEST:
+            return { ...state, updateLoading: true };
+
+            case UPDATE_PRODUCT_SUCCESS:
+            return {
+                ...state,
+                updateLoading: false,
+                items: state.items.map((item) =>
                 item.id === action.payload.id ? action.payload : item
-            ),
+                ),
             };
+
+            case UPDATE_PRODUCT_FAILURE:
+            return {
+                ...state,
+                updateLoading: false,
+                error: action.payload,
+            };
+
             case DELETE_PRODUCT_REQUEST:
                 return {...state, deleteLoading: true };
             case DELETE_PRODUCT_SUCCESS:

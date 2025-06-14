@@ -5,7 +5,7 @@ import { Container,Row,Col,Button } from "react-bootstrap";
 import ProductCard from "../../components/ProductCard";
 import ProductModal from "./ProductModal";
 import { useDispatch,useSelector } from "react-redux";
-import { addProduct, fetchProducts } from "../../redux/actions/productActions";
+import { addProduct, fetchProducts,updateProduct,deleteProduct } from "../../redux/actions/productActions";
 
 const Products = () => {
     const sampleProducts = [];
@@ -15,7 +15,7 @@ const Products = () => {
 
     const dispatch = useDispatch();
 
-    const{item,loading} = useSelector((state)=> state.products);
+    const{items,loading} = useSelector((state)=> state.products);
 
     useEffect(() => {
       dispatch(fetchProducts());
@@ -39,16 +39,15 @@ const Products = () => {
     };
     
 
-    const handleSubmit = (values) =>{
-      if(editItem) {
-        console.log("edited products",values);
-        //dispatch update product action
-        dispatch(addProduct(values));
-      }else {
-        //dispatch add product
-        dispatch(updateProduct(values));
-      }
-    };
+    const handleSubmit = (values) => {
+  if (editItem) {
+    console.log("edited products", values);
+    dispatch(updateProduct(values)); 
+  } else {
+    dispatch(addProduct(values)); 
+  }
+};
+
         /*{
             id:1,
             name:"Wireless Headphones",
@@ -90,7 +89,7 @@ return(
         </div>
 
     {
-    sampleProducts.length === 0 ? ( 
+    items.length === 0 ? ( 
       <div
         className="d-flex justify-content-center align-items-center"
         style={{ minHeight: "200px" }}
@@ -98,9 +97,9 @@ return(
         <EmptyComponent message="We're currently out of stock" /> 
         </div>
         ) : (
-      <Row className="g-4">
-        {sampleProducts.map((product) => (
-          <Col key={product.id} xs={12} sm={6} md={3} lg={3}>
+      <Row className="g-4 product-listing">
+        {items.map((product) => (
+          <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="d-flex">
             <ProductCard 
               product={product}  
               onEdit={() => handleEdit(product)}
@@ -109,6 +108,7 @@ return(
           </Col>
         ))}
       </Row>
+
     )}
 
     </Container>
@@ -123,6 +123,7 @@ return(
     }
   }
   onSubmit={handleSubmit}
+
     />
   </section>
   </>

@@ -40,7 +40,7 @@ const ProductModal = ({show, onClose, initialValues, onSubmit, isEdit}) => {
         title={isEdit ? "Edit Product" : "Add New Product"}
         submitLabel={isEdit ? "Update" : "Add"}
       >
-        <Form>
+        <Form onValidate>
           <Form.Group className="mb-3">
             <Form.Label>Product Name</Form.Label>
             <Form.Control
@@ -95,21 +95,20 @@ const ProductModal = ({show, onClose, initialValues, onSubmit, isEdit}) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Price</Form.Label>
-            <Form.Control
-              type="text"
-              name="price"
-              placeholder="Enter price"
-              value={values.price}
-              onChange={handleSubmit}
-              onBlur={handleBlur}
-              isInvalid={touched.price && !!errors.price}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.price}
-            </Form.Control.Feedback>
-          
-          </Form.Group>
+  <Form.Label>Price</Form.Label>
+    <Form.Control
+      type="text"
+      name="price"
+      placeholder="Enter price"
+      value={values.price}
+      onChange={handleChange}   
+      onBlur={handleBlur}
+      isInvalid={touched.price && !!errors.price}
+    />
+    <Form.Control.Feedback type="invalid">
+      {errors.price}
+    </Form.Control.Feedback>
+  </Form.Group>
         </Form>
       </ModalComponent>
         )}
