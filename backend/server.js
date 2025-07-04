@@ -68,7 +68,10 @@ app.delete("/api/products/:id", (req, res) =>{
 
 //route files
 app.use("/api/products",productRoutes)
-app.listen(PORT, ()=>
+
+app.use("/api/auth",authRoutes);
+
+app.listen(process.env.PORT, ()=>
 {
     connectDB();
     console.log("Server statred at http://localhost:5173")

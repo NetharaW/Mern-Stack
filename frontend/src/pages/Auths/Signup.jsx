@@ -2,12 +2,14 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import logo from "../../assets/logo.png";
+import { useDispatch } from "react-redux";
+import { signup } from "../../redux/actions/authActions"; 
 
 const SignupSchema = Yup.object().shape({
     fullname: Yup.string().required("Fullname is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     phone: Yup.string()
-        .matches(/^[0-9]{10,15}$/, "Phone must be 10-15 digits")
+        .matches(/^[0-9]{10,15}$/, "Phone must be 10–15 digits")
         .required("Phone is required"),
     password: Yup.string()
         .min(6, "Minimum 6 characters")
@@ -18,11 +20,29 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Signup = () => {
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (values, { resetForm }) => {
+        const { fullname, email, phone, password } = values;
+
+        // Call the signup action
+        const success = await dispatch(signup({
+            name: fullname,
+            email,
+            phone,
+            password
+        }));
+
+        if (success) {
+            resetForm();
+        }
+    };
+
     return (
         <div className="signup-container">
             <div className="signup-card shadow p-4">
                 <div className="text-center mb-4">
-                    <img 
+                    <img
                         className="logo"
                         src={logo}
                         alt="Logo"
@@ -40,10 +60,7 @@ const Signup = () => {
                         confirmPassword: "",
                     }}
                     validationSchema={SignupSchema}
-                    onSubmit={(values, { resetForm }) => {
-                        console.log("Form values", values);
-                        resetForm();
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     {({ isSubmitting }) => (
                         <Form>
