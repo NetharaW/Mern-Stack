@@ -1,4 +1,4 @@
-import { Toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS= "LOGIN_SUCCESS";
@@ -50,5 +50,47 @@ export const signup= (values) => async (dispatch) =>{
     });
 
     toast.error(error.message);
+  }
+};
+export const login = (values) => async (dispatch) => {
+  console.log("Logging in user...", values);
+  dispatch({ type: LOGIN_REQUEST });
+
+  try {
+    const res = await fetch("https://mern-stack-tutorial-dy2v.onrender.com/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: values.email,
+        password: values.password,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message || "Login failed");
+
+    localStorage.setItem("token", data.token);
+
+    toast.success("Login successful!");
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: data.user,
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Login error:", error.message);
+
+    dispatch({
+      type: LOGIN_FAILURE,
+      payload: error.message,
+    });
+
+    toast.error(error.message);
+    return false;
   }
 };

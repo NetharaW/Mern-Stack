@@ -6,7 +6,7 @@ import Home from "./pages/Home/Home";
 
 import Product from './pages/Products/Products';
 import Contact from './pages/Contact/Contact';
-
+import Login from './pages/Auths/Login';
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 
@@ -22,7 +22,8 @@ function App() {
           <Route path="/" element={<Home/>}></Route>
           <Route path="/products" element={<Product/>}/>
           <Route path="/contact" element={<Contact/>}/>   
-          <Route path="/register" element={<Signup/>}/>  
+          <Route path="/register" element={<Signup/>}/>
+          <Route path="/login" element={<Login />} />  
         </Routes>  
       </Router>
       <ToastContainer position= "top-right" autoClose={3000}/>
