@@ -8,17 +8,17 @@ import {
 } from "../../redux/actions/productActions";
 
 import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'; // Don't forget to import the CSS!
+import 'react-loading-skeleton/dist/skeleton.css'; 
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner'; // Keep Spinner if you still want it for very quick loads or as a fallback
+import Spinner from 'react-bootstrap/Spinner'; 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import Header from '../../components/Header';
 import ProductCard from '../../components/ProductCard';
-import ProductModal from '../../components/ProductModal';
+import ProductModal from "./ProductModal";
 import EmptyComponent from '../../components/EmptyComponent';
 
 const Products = () => {
