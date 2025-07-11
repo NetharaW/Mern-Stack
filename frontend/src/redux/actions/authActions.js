@@ -9,7 +9,6 @@ export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
 
 //SIGNUP
-
 export const signup= (values) => async (dispatch) =>{
     console.log("User signup ..",values);
     dispatch({type: SIGNUP_REQUEST});
@@ -23,6 +22,8 @@ export const signup= (values) => async (dispatch) =>{
         name: values.name,
         email: values.email,
         password: values.password,
+        // ADDED THIS LINE:
+        role: "customer", // Setting a default role for new signups
       }),
     });
 
@@ -52,6 +53,7 @@ export const signup= (values) => async (dispatch) =>{
     toast.error(error.message);
   }
 };
+
 export const login = (values) => async (dispatch) => {
   console.log("Logging in user...", values);
   dispatch({ type: LOGIN_REQUEST });

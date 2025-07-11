@@ -1,132 +1,111 @@
-import React,{useState,useEffect} from "react";
-import Header from "../../components/Header";
-import { EmptyComponent } from "../../components/Empty";
-import { Container,Row,Col,Button } from "react-bootstrap";
-import ProductCard from "../../components/ProductCard";
-import ProductModal from "./ProductModal";
-import { useDispatch,useSelector } from "react-redux";
-import { addProduct, fetchProducts,updateProduct,deleteProduct } from "../../redux/actions/productActions";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addProduct,
+  deleteProduct,
+  fetchProducts,
+  updateProduct,
+} from "../../../redux/actions/productActions";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+import Header from '../../components/Header';
+import ProductCard from '../../components/ProductCard';
+import ProductModal from '../../components/ProductModal';
+import EmptyComponent from '../../components/EmptyComponent';
 
 const Products = () => {
-    const sampleProducts = [];
+  const [showModal, setShowModal] = useState(false);
+  const [editItem, setEditItem] = useState(null);
 
-    const [showModal,setShowModal] = useState(false);
-    const [editItem,setEditItem] = useState(null);
+  const dispatch = useDispatch();
+  const { items, loading } = useSelector((state) => state.products);
 
-    const dispatch = useDispatch();
+  console.log("Fetched product items:", items);
 
-    const{items,loading} = useSelector((state)=> state.products);
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
-    useEffect(() => {
-      dispatch(fetchProducts());
-    }, [dispatch]);
+  const handleAdd = () => {
+    setEditItem(null);
+    setShowModal(true);
+  };
 
-    const handleAdd=() => {
-      //setEditItem
-      setEditItem(null);
-      //setShowModal
-      setShowModal(!showModal);
-    };
+  const handleEdit = (product) => {
+    setEditItem(product);
+    setShowModal(true);
+  };
 
-    const handleEdit = (product) => {
-      setEditItem(product);
-      setShowModal(true);
-    };
+  const handleDelete = (id) => {
+    dispatch(deleteProduct(id));
+  };
 
-    const handleDelete = (id) => {
-      //dispatch delete product
-      dispatch(deleteProduct(id));
-    };
-    
-
-    const handleSubmit = (values) => {
-  if (editItem) {
-    console.log("edited products", values);
-    dispatch(updateProduct(values)); 
-  } else {
-    dispatch(addProduct(values)); 
-  }
-};
-
-        /*{
-            id:1,
-            name:"Wireless Headphones",
-            description: "Noise cancelling over-ear headphone",
-            banner:
-            "https://res.cloudinary.com/da3w329cx/image/upload/v1683056487/samples/landscapes/nature-mountains.jpg",
-            price:120,
-        },
-        {
-                id:2,
-                name:"Smart Watch",
-                description:"Smart wearable with health tracking",
-                 banner:
-    "https://res.cloudinary.com/da3w329cx/image/upload/v1683056500/cld-sample-5.jpg",
-                price:80,        
-            },
-{
-    id:3,
-    name:"Laptop",
-    description:"14-inch Full HD display, 256GB SSD",
-    banner: "https://res.cloudinary.com/da3w329cx/image/upload/v1683056499/cld-sample-3.jpg",
-    price:600,
-},
-    ];*/
-
-return(
-<>
-    <section>
-        <Header />
-        {loading && <div>fetching data...</div>}
-        <Container className="mt-4">
-        <div className="d-flex justify-content-end mb-4">
-{/*<AddProduct/>*/}
-
-        < Button variant="primary" onClick={handleAdd}>
-          <i className="bi bi-plus-circle me-2"></i>Add Product
-        </Button>
-
-        </div>
-
-    {
-    items.length === 0 ? ( 
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "200px" }}
-      >
-        <EmptyComponent message="We're currently out of stock" /> 
-        </div>
-        ) : (
-      <Row className="g-4 product-listing">
-        {items.map((product) => (
-          <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="d-flex">
-            <ProductCard 
-              product={product}  
-              onEdit={() => handleEdit(product)}
-              onDelete={() => handleDelete(product.id)}
-            />
-          </Col>
-        ))}
-      </Row>
-
-    )}
-
-    </Container>
-    <ProductModal 
-    show={showModal} 
-    onClose={() => setShowModal(!showModal)}
-    initialValues={editItem || {
-      title: "",
-      image: "",
-      description: "",
-      price:0,
+  const handleSubmit = (values) => {
+    if (editItem) {
+      dispatch(updateProduct(editItem._id, values));
+    } else {
+      dispatch(addProduct(values));
     }
-  }
-  onSubmit={handleSubmit}
+    setShowModal(false);
+    setEditItem(null);
+  };
 
-    />
-  </section>
-  </>
+  return (
+    <section>
+      <Header />
+
+      <Container className="mt-4">
+        <div className="d-flex justify-content-end mb-4">
+          <Button variant="primary" onClick={handleAdd}>
+            <i className="bi bi-plus-circle me-2"></i>Add Product
+          </Button>
+        </div>
+
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center vh-50">
+            <Spinner animation="border" role="status">
+             <Skeleton count={5}/>
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        ) : (
+          items && items.length === 0 ? (
+            <div
+              className="d-flex justify-content-center align-items-center"
+              style={{ minHeight: "200px" }}
+            >
+              <EmptyComponent message="We're currently out of stock" />
+            </div>
+          ) : (
+            <Row className="g-4">
+              {items && items.map((product) => (
+                <Col key={product._id} xs={12} sm={6} md={3} lg={3}>
+                  <ProductCard
+                    product={product}
+                    onEdit={() => handleEdit(product)}
+                    onDelete={() => handleDelete(product._id)}
+                  />
+                </Col>
+              ))}
+            </Row>
+          )
+        )}
+      </Container>
+
+      <ProductModal
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        handleSubmit={handleSubmit}
+        product={editItem}
+      />
+    </section>
   );
 };
 
