@@ -19,7 +19,7 @@ import Col from 'react-bootstrap/Col';
 import Header from '../../components/Header';
 import ProductCard from '../../components/ProductCard';
 import ProductModal from "./ProductModal";
-import EmptyComponent from '../../components/EmptyComponent';
+import { EmptyComponent } from "../../components/Empty";
 
 const Products = () => {
   const [showModal, setShowModal] = useState(false);
